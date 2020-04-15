@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 import argparse
 import csv
 from collections import defaultdict
@@ -89,15 +87,15 @@ def shexec(command, wd = "."):
         raise FailedCommand(returncode, command)
     return returncode
 
-def make(targets, j=8):
+def make(targets, j=8, stancflags=""):
     for i in range(len(targets)):
         prefix = ""
         if not targets[i].startswith(os.sep):
             prefix = DIR_UP
         targets[i] = prefix + targets[i] + EXE_FILE_EXT
     try:
-        shexec("make -i -j{} {}"
-            .format(j, " ".join(targets)), wd = "cmdstan")
+        shexec("make -i -j{} STANCFLAGS={} {}"
+            .format(j, stancflags, " ".join(targets)), wd = "cmdstan")
     except FailedCommand:
         print("Failed to make at least some targets")
 
@@ -158,7 +156,7 @@ def stdev(coll, mean):
 
 def csv_summary(csv_file):
     d = defaultdict(list)
-    with open(csv_file, 'rb') as raw:
+    with open(csv_file, 'r') as raw:
         headers = None
         for row in csv.reader(raw):
             if row[0].startswith("#"):
@@ -268,6 +266,7 @@ def run(exe, data, overwrite, check_golds, check_golds_exact, runs, method, num_
         print("Encountered exception while running {}:".format(exe))
         print(e)
         return 0, (fails, errors + [str(e)])
+    print("FILE: ", tmp)
     summary = csv_summary(tmp)
     with open(tmp, "w+") as f:
         f.writelines(format_summary_lines(summary))
@@ -332,6 +331,7 @@ def parse_args():
                         help="Number of samples to ask Stan programs for if we're sampling.")
     parser.add_argument("--tests-file", dest="tests", action="store", type=str, default="")
     parser.add_argument("--scorch-earth", dest="scorch", action="store_true")
+    parser.add_argument("--stancflags", dest="stancflags", action="store", type=str, default="")
     return parser.parse_args()
 
 def process_test(overwrite, check_golds, check_golds_exact, runs, method):
@@ -378,7 +378,7 @@ if __name__ == "__main__":
     tests = [(model, exe, find_data_for_model(model), ns)
              for model, exe, ns in zip(models, executables, num_samples)]
 
-    make_time, _ = time_step("make_all_models", make, executables, args.j)
+    make_time, _ = time_step("make_all_models", make, executables, args.j, args.stancflags)
     if args.runj > 1:
         tp = ThreadPool(args.runj)
         map_ = tp.imap_unordered
@@ -394,9 +394,12 @@ if __name__ == "__main__":
     with open("{}.csv".format(args.name), "w") as f:
         f.write(test_results_csv(results))
     failed = False
+    print("\n")
     for model, _, fails, errors in results:
         if fails or errors:
-            print("'{}' had fails '{}' and errors '{}'".format(model, fails, errors))
+            print("TEST FAILED: '{}' had fails '{}' and errors '{}'".format(model, fails, errors))
             failed = True
+        else:
+            print("TEST PASSED: '{}'".format(model))
     if failed:
         sys.exit(-1)
