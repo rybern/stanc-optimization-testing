@@ -75,7 +75,8 @@ stat_comp_benchmarks/benchmarks/pkpd/sim_one_comp_mm_elim_abs.stan
 ** Control?
    PASSED
 ** Failing sets
-*** 1
+*** DONE 1
+    CLOSED: [2020-04-15 Wed 13:36]
 **** settings
    { function_inlining= true
    ; static_loop_unrolling= true
@@ -111,7 +112,8 @@ TEST PASSED: 'performance.compilation'
      return dydt;
 ** Minimal failing sets
 ** Maximal working sets
-*** 1
+*** DONE 1
+    CLOSED: [2020-04-15 Wed 13:36]
   { function_inlining= true
   ; static_loop_unrolling= true
   ; one_step_loop_unrolling= true
@@ -125,6 +127,121 @@ TEST PASSED: 'performance.compilation'
   ; lazy_code_motion= false
   ; optimize_ad_levels= false
   }
+*** 2
+    { function_inlining= true
+    ; static_loop_unrolling= true
+    ; one_step_loop_unrolling= true
+    ; list_collapsing= true
+    ; block_fixing= true
+    ; constant_propagation= true
+    ; expression_propagation= false
+    ; copy_propagation= true
+    ; dead_code_elimination= true
+    ; partial_evaluation= true
+    ; lazy_code_motion= false
+    ; optimize_ad_levels= true
+    }
+* Giant-50
+** files
+example-models/ARM/Ch.4/mesquite_va.stan
+example-models/bugs_examples/vol2/pines/pines-4.stan
+example-models/knitr/chapter2/ratings_3.stan
+example-models/bugs_examples/vol2/endo/endo2.stan
+example-models/education/tutorial_twopl/reg_dif.stan
+example-models/knitr/sum-of-exponentials/sum_of_exponentials_with_priors.stan
+example-models/knitr/car-iar-poisson/bym2_offset_only.stan
+example-models/bugs_examples/vol1/seeds/seeds_stanified.stan
+example-models/knitr/car-iar-poisson/simple_iar.stan
+example-models/ARM/Ch.23/electric_1b_chr.stan
+example-models/knitr/car-iar-poisson/bym2.stan
+example-models/ARM/Ch.19/pilots.stan
+example-models/knitr/irt/irt_1pl_predict.stan
+example-models/ARM/Ch.5/wells_daae_c.stan
+example-models/knitr/chapter2/mixture_2.stan
+example-models/misc/hier_multivariate/hier_multivariate.stan
+example-models/ARM/Ch.14/election88.stan
+example-models/BPA/Ch.04/GLMM5.stan
+example-models/bugs_examples/vol1/seeds/seeds_centered.stan
+example-models/ARM/Ch.9/electric_supp.stan
+example-models/knitr/bradley-terry/individual-uniform.stan
+example-models/ARM/Ch.23/sesame_street2.stan
+example-models/bugs_examples/vol2/orange/orange.stan
+example-models/ARM/Ch.14/election88_full.stan
+example-models/BPA/Ch.08/mr_ss.stan
+example-models/knitr/car-iar-poisson/bym_predictor_plus_offset.stan
+example-models/bugs_examples/vol2/eyes/eyes.stan
+example-models/ARM/Ch.13/radon_inter_vary_chr.stan
+example-models/ARM/Ch.17/latent_glm_17.7.stan
+example-models/ARM/Ch.25/earnings_pt2.stan
+example-models/misc/multivariate-probit/probit-multi-good.stan
+example-models/ARM/Ch.5/wells_predicted.stan
+example-models/knitr/chapter2/sum_of_exponentials_with_priors.stan
+example-models/ARM/Ch.17/radon_vary_inter_slope_17.2.stan
+example-models/knitr/chapter2/abs_test.stan
+example-models/ARM/Ch.23/electric_1c_chr.stan
+example-models/ARM/Ch.21/multiple_comparison.stan
+example-models/knitr/irt/irt_1pl_mle.stan
+example-models/education/tutorial_twopl/reg_centered.stan
+example-models/ARM/Ch.7/earnings1.stan
+example-models/bugs_examples/vol1/surgical/surgical.stan
+example-models/ARM/Ch.16/radon.1.stan
+example-models/ARM/Ch.19/election88.stan
+example-models/bugs_examples/vol2/stagnant/stagnant2.stan
+example-models/knitr/world-cup/worldcup_first_try_noprior.stan
+example-models/misc/hmm/hmm.stan
+example-models/ARM/Ch.9/electric_inter.stan
+example-models/bugs_examples/vol2/beetles/beetles_cloglog.stan
+example-models/basic_distributions/ordered_pair.stan
+example-models/bugs_examples/vol1/leukfr/leukfr.stan
+** REMOVED OUTLIER files
+** Control?
+** Failing sets
+*** 1
+** Minimal failing sets
+*** 1
+** Maximal working sets
+*** 1
+
+* Giant
+** files
+   giant.tests
+** REMOVED OUTLIER files
+** Control?
+   presumtive Success
+** Failing sets
+*** 1
+** Minimal failing sets
+*** 1
+** Maximal working sets
+*** 1
+
+** Notes
+*** Stalled out
+**** Settings
+    { function_inlining= true
+    ; static_loop_unrolling= true
+    ; one_step_loop_unrolling= true
+    ; list_collapsing= true
+    ; block_fixing= true
+    ; constant_propagation= true
+    ; expression_propagation= false
+    ; copy_propagation= true
+    ; dead_code_elimination= true
+    ; partial_evaluation= true
+    ; lazy_code_motion= false
+    ; optimize_ad_levels= true
+    }
+**** Restarting
+     Should be able to nix the gold building
+     Could intervene in the python to not build/run the first N
+     Or could restart without that one file
+***** Stuck on:
+      example-models/bugs_examples/vol3/data_cloning/seeds.stan
+***** Ordered?
+      Yes, ordered.
+**** Investigations
+***** Check the hpp for the stalled file for obvious inefficiencies
+* Giant-50-residuals
 * Technical notes
 ** Remember to run the golds when switching sets!
 ** "has fails" means the gold check failed

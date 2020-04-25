@@ -395,11 +395,21 @@ if __name__ == "__main__":
         f.write(test_results_csv(results))
     failed = False
     print("\n")
+    good_files = []
+    bad_files = []
     for model, _, fails, errors in results:
         if fails or errors:
             print("TEST FAILED: '{}' had fails '{}' and errors '{}'".format(model, fails, errors))
             failed = True
+            bad_files.append(model)
         else:
             print("TEST PASSED: '{}'".format(model))
+            good_files.append(model)
+    print("Good models:\n")
+    for model in good_files:
+        print("{}".format(model))
+    print("Bad models:\n")
+    for model in bad_files:
+        print("{}".format(model))
     if failed:
         sys.exit(-1)
